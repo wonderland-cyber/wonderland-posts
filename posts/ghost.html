@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>鬼 · Wonderland</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Sans+3:wght@400;600;700;900&display=swap");
+
+      :root {
+        --paper: #ffffff;
+        --panel: #f7f7f7;
+        --ink: #34343b;
+        --muted: #7a7a82;
+        --line: #e6e6e8;
+        --accent: #2a7ae2;
+        --accent-soft: #edf5fe;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root { --paper: #1b1b1e; --panel: #202024; --ink: #e6e6e6; --muted: #a1a1aa; --line: #34343a; --accent: #6ca6f5; --accent-soft: #222e3f; }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; color: var(--ink); background: var(--paper); font-family: Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      .shell { display: grid; grid-template-columns: 264px minmax(0, 1fr); min-height: 100vh; }
+      aside { position: sticky; top: 0; display: flex; flex-direction: column; height: 100vh; padding: 2.5rem 1.35rem; border-right: 1px solid var(--line); background: var(--panel); }
+      .identity { display: flex; align-items: center; gap: .75rem; margin-bottom: 2.4rem; }
+      .mark { display: grid; width: 2.7rem; height: 2.7rem; place-items: center; color: var(--accent); border: 2px solid var(--accent); border-radius: 50%; font-family: "Source Sans 3", sans-serif; font-size: 1.05rem; font-weight: 900; }
+      .identity strong { display: block; font-family: "Source Sans 3", sans-serif; font-size: 1.05rem; }
+      .identity small, .side-note { color: var(--muted); font-family: "Source Sans 3", sans-serif; font-size: .78rem; }
+      .identity small { display: block; margin-top: .1rem; }
+      .back { display: inline-flex; align-items: center; width: fit-content; padding: .52rem .7rem; color: var(--accent); border-left: 3px solid var(--accent); background: var(--paper); font-family: "Source Sans 3", sans-serif; font-size: .9rem; font-weight: 700; }
+      .side-note { margin-top: auto; line-height: 1.65; }
+      main { width: min(800px, 100%); margin: 0 auto; padding: 4.3rem 4.4rem; }
+      .eyebrow { margin: 0 0 .75rem; color: var(--muted); font-family: "Source Sans 3", sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+      h1 { margin: 0; font-family: "Source Sans 3", sans-serif; font-size: clamp(2.8rem, 7vw, 4.1rem); font-weight: 700; letter-spacing: -.04em; line-height: 1; }
+      .post-meta { margin: 1.25rem 0 2.8rem; padding-bottom: 1.15rem; color: var(--muted); border-bottom: 1px solid var(--line); font-family: "Source Sans 3", sans-serif; font-size: .9rem; }
+      article { font-size: 1.08rem; line-height: 2; }
+      article p { margin: 0 0 1.35rem; }
+      article p:first-child { font-weight: 700; }
+      footer { margin-top: 4rem; padding-top: 1.35rem; color: var(--muted); border-top: 1px solid var(--line); font-family: "Source Sans 3", sans-serif; font-size: .82rem; }
+      @media (max-width: 800px) {
+        .shell { display: block; }
+        aside { position: static; height: auto; padding: 1rem 1.15rem; border-right: 0; border-bottom: 1px solid var(--line); }
+        .identity { margin-bottom: 1rem; }
+        .side-note { display: none; }
+        main { padding: 2.7rem 1.25rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside>
+        <a class="identity" href="../index.html" aria-label="回到文章列表">
+          <span class="mark">W</span>
+          <span><strong>Wonderland</strong><small>independent notes</small></span>
+        </a>
+        <a class="back" href="../index.html">← All posts</a>
+        <p class="side-note">A small home for writing.</p>
+      </aside>
+      <main>
+        <header>
+          <p class="eyebrow">Fiction</p>
+          <h1>鬼</h1>
+          <p class="post-meta"><time datetime="2026-08-14">Aug 14, 2026</time> · Wonderland</p>
+        </header>
+        <article>
+          <p>今天轮到老子取货。</p>
+          <p>呸。想想真是邪了门，怎么给我抽到鬼牌。兄弟们都劝我多加保重，其中，信仰基督的老黑一瘸一拐地走来朝我耳语，一定要小心那个G。</p>
+          <p>G是Ghost的简称，也就是鬼。但我和老黑常常害怕说出“鬼”后会把它招过来。说ghost也担心它能听懂英语。就一拍脑袋想了个代号给它，G。</p>
+          <p>是的，就在前不久，我们家潜进了一群东西。据说一旦被它们抓到，不光是抽筋拔骨，还会被不同的手法折磨后残忍死去。</p>
+          <p>似乎它们以此为乐。</p>
+          <p>但在这群东西里面，我能感觉到，G是不一样的。其余的东西都有个弱点，就是白天不得不离开这座房子，似乎有什么在驱赶它们。可G不用。</p>
+          <p>G仿佛没有弱点。</p>
+          <p>只有老黑曾跟它交过手。据说，那晚是个遮云蔽月夜。老黑肯定怕的要死，但还是硬着头皮出去了。</p>
+          <p>他来到厨房，刚准备取货时，直觉让他身体一僵。他猛然回过头，双眼便直勾勾对上了遥远黑暗中那两团绿幽幽的火。</p>
+          <p>鬼……</p>
+          <p>一时间，恐惧让他忘记了逃走。反应过来时，鬼火已经瞬间飘至眼前。一个尖利却又柔软的东西按着他，让他动弹不得。据说，他感受到有一双獠牙触碰到了脖颈。</p>
+          <p>却没有意料之中的疼痛传来。</p>
+          <p>“我一睁开眼差点被闪瞎了，我跟你说，那光正正好好照出个大圆，唉哟那个亮的，我还以为我上天堂见王母娘娘呢。”</p>
+          <p>“是耶稣基督好吗！”我扶住额头。</p>
+          <p>“谁说天堂没有王母娘娘，说不定几万年前还是一家子呢，别打岔听我说完。”</p>
+          <p>我做了个“请”的手势。</p>
+          <p>“我正被那怪光照的晕乎乎的时候，突然，唰的一下，一个影子落下来，吓得我差点没给跪下，你见过二郎神下凡，就像那样！我这腿现在想想都哆嗦。”</p>
+          <p>抱歉，我只能想象出见到皇军的汉奸。</p>
+          <p>“后来头一翁我就晕过去了，醒来就发现躺在外面地板上，真是忒邪乎了。”</p>
+          <p>“我跟你讲，这事我都没敢跟别人说，我就告诉你一个。”</p>
+          <p>“滚。”</p>
+          <p>我打断他一本正经的瞎话，“你回来臭得像是跌进了粪池，难道是二郎神的脚味儿吗。”我揉着太阳穴，思考夜里的计划。</p>
+          <p>钟声敲响第十二下时，我开始行动。今晚的月光让我心里踏实了许多，毕竟黑暗里的未知更会激发心底的恐惧。</p>
+          <p>我踮着脚，穿过客厅，猫着腰，走进厨房，然后一眼就见到了货。</p>
+          <p>它静静地伫立在那。我上前探了探货的虚实，发现它就剩个底儿了——这是最好的情况。于是轻车熟路，准备先爬上不高的底部。</p>
+          <p>瞬间，背后起了一阵鸡皮疙瘩，因为我感受到了老黑提到的窥视感。压抑住恐惧，我缓缓地扭过头。</p>
+          <p>只见它一步一步，缓慢地踏出阴影之中。在月色下，我终于看清了鬼的全貌。那幽绿的不是鬼火，是它的眼睛。它体格巨大，爆发力惊人，仿佛一瞬就到了我面前。</p>
+          <p>回过神的我，当机立断朝鬼奔去。这一出，显然让鬼吃了一惊。趁它呆愣的瞬间，我打它身下钻了过去。接着使出毕生本领夺命狂奔。</p>
+          <p>谁知道反应过来后的鬼更快，在他穿过客厅时就追上了他。电光火石间，一个尖利却又柔软的东西按得我动弹不得，随即感受到有一双獠牙触碰到了我的脖颈。</p>
+          <p>我不甘心地闭上了眼睛。</p>
+          <p>没有意料中的疼痛，只感觉后颈肉被提了起来。地板在我身下飞快移动。</p>
+          <p>我的方向感不错，知道它叼着我来到了玄关。扑通，颈上一松，我跌进了一个逼仄的小洞，不深。可马上，丝丝缕缕的臭气从洞的四面八方往我鼻孔里钻。我赶忙跑出洞口，一边大口大口地呼吸新鲜空气，一边朝据点跑。谁知没跑几步就被重物压住，接着又被叼回那个小洞。</p>
+          <p>小洞的味道熏得我直翻白眼，底下柔软的垫子却比他处更甚，味道浓郁得仿佛世间最邪恶的东西。我尝试了无数次逃跑，最后总能被叼回这个邪恶的小洞。终于，我选择了躺尸。“你熏死我吧！”</p>
+          <p>谁知，外面久久没有动静。我侧耳倾听，一段时间过后，隐隐约约传来离开的脚步声。我谨慎地等到脚步声消散后很久，才从洞里爬出去。这邪恶的洞穴竟然还不只一个，竟是成双的。一阵惊悚后，我兔子一般飞快地跑回了据点。</p>
+          <p>兄弟们纷纷凑上前，一脸崇拜地问我是怎么脱险的。我清了清嗓子，“我遇到了王母娘娘……”</p>
+        </article>
+        <footer>© 2026 Wonderland</footer>
+      </main>
+    </div>
+  </body>
+</html>
