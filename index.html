@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Posts · Wonderland</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Sans+3:wght@400;600;700;900&display=swap");
+
+      :root {
+        --paper: #ffffff;
+        --panel: #f7f7f7;
+        --ink: #34343b;
+        --muted: #7a7a82;
+        --line: #e6e6e8;
+        --accent: #2a7ae2;
+        --accent-soft: #edf5fe;
+        --card: #ffffff;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.025);
+      }
+
+      [data-theme="dark"] {
+        --paper: #1b1b1e;
+        --panel: #202024;
+        --ink: #e6e6e6;
+        --muted: #a1a1aa;
+        --line: #34343a;
+        --accent: #6ca6f5;
+        --accent-soft: #222e3f;
+        --card: #202024;
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      button, input { font: inherit; }
+      button { cursor: pointer; }
+      a { color: inherit; text-decoration: none; }
+
+      .shell { display: grid; grid-template-columns: 264px minmax(0, 1fr); min-height: 100vh; }
+      .sidebar {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        align-self: start;
+        height: 100vh;
+        padding: 2.5rem 1.35rem 1.4rem;
+        border-right: 1px solid var(--line);
+        background: var(--panel);
+      }
+      .identity { display: flex; align-items: center; gap: .75rem; margin-bottom: 2.1rem; }
+      .mark {
+        display: grid;
+        width: 2.7rem;
+        height: 2.7rem;
+        place-items: center;
+        color: var(--accent);
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        font-family: "Source Sans 3", sans-serif;
+        font-size: 1.05rem;
+        font-weight: 900;
+        font-style: normal;
+      }
+      .identity strong { display: block; color: var(--ink); font-family: "Source Sans 3", sans-serif; font-size: 1.05rem; font-weight: 700; letter-spacing: .01em; }
+      .identity span, .eyebrow, .post-meta, .count, .sidebar-foot {
+        color: var(--muted);
+        font-family: "Source Sans 3", sans-serif;
+        font-size: .78rem;
+        letter-spacing: 0;
+      }
+      .identity span { display: block; margin-top: .1rem; }
+      .main-nav { display: grid; gap: .18rem; margin-bottom: 2rem; }
+      .main-nav a {
+        padding: .52rem .7rem;
+        color: var(--muted);
+        border-left: 3px solid transparent;
+        border-radius: .15rem;
+        font-size: .9rem;
+      }
+      .main-nav a.active { color: var(--accent); border-color: var(--accent); background: var(--card); box-shadow: var(--shadow); font-weight: 700; }
+      .section-label { margin: 0 0 .7rem .7rem; color: var(--muted); font: 600 .7rem "Source Sans 3", sans-serif; letter-spacing: .06em; text-transform: uppercase; }
+      .tag-workbench { padding-top: .1rem; }
+      .new-tag-form { display: grid; grid-template-columns: minmax(0, 1fr) 2.15rem; gap: .38rem; }
+      .new-tag-form input { min-width: 0; padding: .52rem .58rem; font-size: .82rem; }
+      .new-tag-form button {
+        display: grid;
+        place-items: center;
+        color: white;
+        border: 0;
+        border-radius: .18rem;
+        background: var(--accent);
+        font-size: 1rem;
+      }
+      .tag-helper, .tag-status { margin: .6rem .1rem .75rem; color: var(--muted); font-size: .75rem; line-height: 1.45; }
+      .tag-status { min-height: 1rem; color: var(--accent); }
+      .custom-tags { display: grid; gap: .28rem; }
+      .custom-tag-row { display: flex; align-items: center; gap: .3rem; }
+      .tag-filter {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 0;
+        padding: .42rem .52rem;
+        color: var(--ink);
+        border: 1px solid transparent;
+        border-radius: .18rem;
+        background: transparent;
+        text-align: left;
+      }
+      .tag-filter:hover, .tag-filter.selected { border-color: color-mix(in srgb, var(--tag-color) 55%, var(--line)); background: color-mix(in srgb, var(--tag-color) 11%, transparent); }
+      .tag-filter .tag-dot { width: .52rem; height: .52rem; margin-right: .45rem; border-radius: 50%; background: var(--tag-color); }
+      .tag-filter .tag-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .tag-filter small { margin-left: .45rem; color: var(--muted); font: .68rem "Source Sans 3", sans-serif; }
+      .remove-tag { width: 1.6rem; height: 1.6rem; color: var(--muted); border: 0; border-radius: .18rem; background: transparent; font-size: 1.05rem; line-height: 1; }
+      .remove-tag:hover { color: var(--accent); background: var(--accent-soft); }
+      .no-tags { margin: .4rem 0; color: var(--muted); font-size: .79rem; line-height: 1.5; }
+      .sidebar-foot { margin-top: auto; padding: 1rem .6rem 0; line-height: 1.65; }
+
+      main { width: min(1100px, 100%); margin: 0 auto; padding: 4rem 4.4rem 3rem; }
+      .topline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .55rem; }
+      .eyebrow { color: var(--muted); text-transform: uppercase; }
+      .theme-toggle {
+        display: inline-grid;
+        width: 2.2rem;
+        height: 2.2rem;
+        place-items: center;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        border-radius: .2rem;
+        background: transparent;
+      }
+      .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+      h1 { margin: 0; font-family: "Source Sans 3", sans-serif; font-size: clamp(2.55rem, 6vw, 3.5rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.05; }
+      .intro { max-width: 43rem; margin: 1rem 0 2.3rem; color: var(--muted); font-size: 1rem; line-height: 1.7; }
+      .tools { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; padding: 1rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .search { position: relative; flex: 1; max-width: 25rem; }
+      .search svg { position: absolute; top: 50%; left: .85rem; width: 1rem; height: 1rem; color: var(--muted); transform: translateY(-50%); }
+      input {
+        width: 100%;
+        padding: .7rem .85rem .7rem 2.5rem;
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: .2rem;
+        outline: none;
+        background: var(--card);
+      }
+      input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+      .count { white-space: nowrap; }
+      .post-list { margin: 1.7rem 0 0; padding: 0; list-style: none; }
+      .post {
+        display: grid;
+        grid-template-columns: 5.75rem minmax(0, 1fr) auto;
+        gap: 1.1rem;
+        align-items: start;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid var(--line);
+        transition: opacity .2s ease, transform .2s ease;
+      }
+      .post:hover { background: color-mix(in srgb, var(--accent) 2%, transparent); transform: none; }
+      .date { padding-top: .2rem; color: var(--muted); font: .72rem/1.55 "Source Sans 3", sans-serif; }
+      .post h2 { margin: 0; font-family: "Source Sans 3", sans-serif; font-size: clamp(1.38rem, 2vw, 1.62rem); font-weight: 700; line-height: 1.2; }
+      .post h2 a:hover { color: var(--accent); }
+      .excerpt { max-width: 43rem; margin: .45rem 0 0; color: var(--muted); font-size: .96rem; line-height: 1.55; }
+      .tags { display: flex; flex-wrap: wrap; gap: .32rem; margin-top: .7rem; }
+      .tags:empty { display: none; }
+      .tag {
+        padding: .17rem .42rem;
+        color: var(--tag-color, var(--muted));
+        border: 1px solid color-mix(in srgb, var(--tag-color, var(--line)) 55%, var(--line));
+        border-radius: .18rem;
+        background: color-mix(in srgb, var(--tag-color, transparent) 7%, transparent);
+        font: .65rem "Source Sans 3", sans-serif;
+      }
+      button.tag:hover { background: color-mix(in srgb, var(--tag-color) 16%, transparent); }
+      .tag-action { margin-top: .68rem; padding: 0; color: var(--muted); border: 0; background: transparent; font-size: .78rem; }
+      .tag-action:hover { color: var(--accent); }
+      .tag-picker { display: none; max-width: 29rem; margin-top: .72rem; padding: .75rem; border: 1px solid var(--line); border-radius: .2rem; background: var(--panel); }
+      .tag-picker.open { display: block; }
+      .tag-picker p { margin: 0 0 .55rem; color: var(--muted); font: .7rem "Source Sans 3", sans-serif; letter-spacing: .05em; text-transform: uppercase; }
+      .tag-options { display: flex; flex-wrap: wrap; gap: .45rem .7rem; }
+      .tag-option { display: inline-flex; align-items: center; gap: .35rem; color: var(--ink); font-size: .8rem; }
+      .tag-option input { width: .85rem; height: .85rem; margin: 0; padding: 0; accent-color: var(--tag-color); }
+      .tag-option .tag-dot { width: .45rem; height: .45rem; border-radius: 50%; background: var(--tag-color); }
+      .read { padding-top: .2rem; color: var(--accent); font: .72rem "Source Sans 3", sans-serif; font-weight: 700; white-space: nowrap; }
+      .empty { display: none; margin: 3rem 0; color: var(--muted); text-align: center; }
+      .empty.visible { display: block; }
+      .hidden { display: none; }
+      footer { padding-top: 2.1rem; color: var(--muted); font: .75rem/1.8 "Source Sans 3", sans-serif; }
+
+      @media (max-width: 800px) {
+        .shell { display: block; }
+        .sidebar { position: static; width: 100%; height: auto; padding: 1rem 1.15rem; border-right: 0; border-bottom: 1px solid var(--line); }
+        .identity { margin-bottom: 1rem; }
+        .main-nav { display: flex; margin: 0; overflow-x: auto; }
+        .main-nav a { white-space: nowrap; }
+        .sidebar-foot { display: none; }
+        .tag-workbench { margin-top: .35rem; }
+        main { padding: 2.7rem 1.2rem 2rem; }
+        .post { grid-template-columns: 4.8rem minmax(0, 1fr); gap: .75rem; }
+        .read { display: none; }
+      }
+      @media (max-width: 450px) {
+        .tools { align-items: stretch; flex-direction: column; }
+        .count { text-align: right; }
+        .post { grid-template-columns: 1fr; gap: .45rem; }
+        .date { padding: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" aria-label="文章导航">
+        <a class="identity" href="#top" aria-label="回到文章首页">
+          <span class="mark">Y</span>
+          <span><strong>Wonderland</strong><span>independent notes</span></span>
+        </a>
+        <nav class="main-nav" aria-label="主导航">
+          <a class="active" href="#top">Posts</a>
+          <a href="#all" data-show-all>All posts</a>
+        </nav>
+        <div class="tag-workbench">
+          <p class="section-label">你的标签</p>
+          <form class="new-tag-form" id="new-tag-form">
+            <input id="new-tag-name" maxlength="24" aria-label="新标签名称" placeholder="例如：心理学" autocomplete="off" />
+            <button type="submit" aria-label="创建标签" title="创建标签">+</button>
+          </form>
+          <p class="tag-helper">创建后，在每篇文章下点「+ 添加标签」即可勾选。</p>
+          <p class="tag-status" id="tag-status" role="status" aria-live="polite"></p>
+          <div class="custom-tags" id="custom-tags"></div>
+        </div>
+        <p class="sidebar-foot">标签仅保存在当前浏览器。<br />部署后可再接入正式文章数据。</p>
+      </aside>
+
+      <main id="top">
+        <div class="topline">
+          <span class="eyebrow">Selected writing · 2023—2026</span>
+          <button class="theme-toggle" type="button" aria-label="切换深浅色" title="切换深浅色">◐</button>
+        </div>
+        <h1>Posts</h1>
+        <p class="intro">这里只有可以慢慢读的文章。你也可以自己创建标签，并把它们加到每一篇文章上。</p>
+
+        <section class="tools" aria-label="搜索文章">
+          <label class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
+            <input id="search" type="search" placeholder="搜索标题、摘要或标签…" autocomplete="off" />
+          </label>
+          <span class="count" id="count">08 POSTS</span>
+        </section>
+
+        <ul class="post-list" id="all">
+          <li class="post" data-post-id="language-mechanism" data-search="大语言模型 中介 博弈 信息设计 research llm">
+            <time class="date" datetime="2026-07-08">JUL<br />08 · 2026</time>
+            <article><h2><a href="#post-llm">When language becomes a mechanism</a></h2><p class="excerpt">用一个简单的对话博弈，梳理语言模型怎样不只生成答案，也能成为可分析、可设计的沟通机制。</p><div class="tags" data-tags></div></article>
+            <a class="read" href="#post-llm">READ ↗</a>
+          </li>
+          <li class="post" data-post-id="notes-system" data-search="我的笔记系统 obsidian workflow writing tools">
+            <time class="date" datetime="2026-05-20">MAY<br />20 · 2026</time>
+            <article><h2><a href="#post-notes">一个不会让笔记失去呼吸感的系统</a></h2><p class="excerpt">从收集、整理到重读：一套轻量的笔记流程，保留思考的线索，也尽量少制造维护成本。</p><div class="tags" data-tags></div></article>
+            <a class="read" href="#post-notes">READ ↗</a>
+          </li>
+          <li class="post" data-post-id="reading-conclusions" data-search="阅读 知识边界 reading book review">
+            <time class="date" datetime="2026-04-02">APR<br />02 · 2026</time>
+            <article><h2><a href="#post-reading">读书不是收集结论</a></h2><p class="excerpt">真正有用的阅读，往往从不急着同意作者开始。关于做笔记、提问题与保存不确定性。</p><div class="tags" data-tags></div></article>
+            <a class="read" href="#post-reading">READ ↗</a>
+          </li>
+          <li class="post" data-post-id="failed-experiments" data-search="强化学习 失败实验 reinforcement learning research">
+            <time class="date" datetime="2025-11-16">NOV<br />16 · 2025</time>
+            <article><h2><a href="#post-failure">为失败实验留一盏小灯</a></h2><p class="excerpt">没有写进论文的实验并不等于没有价值；它们会在下一次提问时，帮你少走一些弯路。</p><div class="tags" data-tags></div></article>
+            <a class="read" href="#post-failure">READ ↗</a>
+          </li>
+          <li class="post" data-post-id="walking" data-search="散步 城市 生活 life city walking">
+            <time class="date" datetime="2025-08-26">AUG<br />26 · 2025</time>
+            <article><h2><a href="#post-walk">在陌生街区散步的理由</a></h2><p class="excerpt">偶尔把目的地留空，城市会用比导航更慢、也更具体的方式，把注意力还给你。</p><div class="tags" data-tags></div></article>
+            <a class="read" href="#post-walk">READ ↗</a>
+          </li>
+          <li class="post" data-post-id="terminal-habits" data-search="terminal command line shell commands tools">
+            <time class="date" datetime="2025-06-04">JUN<br />04 · 2025</time>
+            <article><h2><a href="#post-terminal">我每天仍在使用的 10 个终端习惯</a></h2><p class="excerpt">不是工具清单，而是几个能让重复工作变轻、让上下文更干净的小习惯。</p><div class="tags" data-tags></div></article>
+            <a class="read" href="#post-terminal">READ ↗</a>
+          </li>
+          <li class="post" data-post-id="model-uncertainty" data-search="模型 不确定性 uncertainty models research">
+            <time class="date" datetime="2024-12-11">DEC<br />11 · 2024</time>
+            <article><h2><a href="#post-uncertainty">模型的自信，和我们的不确定性</a></h2><p class="excerpt">当模型给出流畅答案时，真正需要被设计的可能不是措辞，而是我们如何看见它不知道什么。</p><div class="tags" data-tags></div></article>
+            <a class="read" href="#post-uncertainty">READ ↗</a>
+          </li>
+          <li class="post" data-post-id="read-a-paper" data-search="论文 阅读 论文阅读 research paper reading">
+            <time class="date" datetime="2024-03-19">MAR<br />19 · 2024</time>
+            <article><h2><a href="#post-paper">如何慢慢读完一篇难论文</a></h2><p class="excerpt">从第一遍的地图，到第三遍的反驳：给需要反复阅读的论文准备一个更有耐心的过程。</p><div class="tags" data-tags></div></article>
+            <a class="read" href="#post-paper">READ ↗</a>
+          </li>
+        </ul>
+        <p class="empty" id="empty">没有找到匹配的文章。换个关键词试试？</p>
+        <footer id="about">© 2026 Wonderland · Built as a posts-only page. 将文章标题、摘要、日期和链接替换为你的内容即可使用。</footer>
+      </main>
+    </div>
+
+    <script>
+      const root = document.documentElement;
+      const savedTheme = localStorage.getItem("posts-theme");
+      if (savedTheme) root.dataset.theme = savedTheme;
+
+      const cards = [...document.querySelectorAll(".post")];
+      const search = document.querySelector("#search");
+      const count = document.querySelector("#count");
+      const empty = document.querySelector("#empty");
+      const postList = document.querySelector("#all");
+      const tagForm = document.querySelector("#new-tag-form");
+      const tagNameInput = document.querySelector("#new-tag-name");
+      const tagStatus = document.querySelector("#tag-status");
+      const customTags = document.querySelector("#custom-tags");
+      const TAGS_KEY = "posts-only-custom-tags-v1";
+      const ASSIGNMENTS_KEY = "posts-only-tag-assignments-v1";
+      const tagColors = ["#2a7ae2", "#2f968d", "#6e63b6", "#a65d93", "#ad7b18", "#357fa7", "#80664d"];
+      let selectedTagId = null;
+      let openEditorPostId = null;
+      let tags = readStorage(TAGS_KEY, []);
+      let assignments = readStorage(ASSIGNMENTS_KEY, {});
+
+      function readStorage(key, fallback) {
+        try {
+          const value = JSON.parse(localStorage.getItem(key));
+          return value ?? fallback;
+        } catch {
+          return fallback;
+        }
+      }
+
+      function saveTags() {
+        localStorage.setItem(TAGS_KEY, JSON.stringify(tags));
+        localStorage.setItem(ASSIGNMENTS_KEY, JSON.stringify(assignments));
+      }
+
+      function getPostTagIds(postId) {
+        return (assignments[postId] || []).filter((id) => tags.some((tag) => tag.id === id));
+      }
+
+      function getTag(tagId) {
+        return tags.find((tag) => tag.id === tagId);
+      }
+
+      function tagStyle(tag) {
+        return `--tag-color: ${tag.color}`;
+      }
+
+      function escapeHtml(value) {
+        return value.replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char]);
+      }
+
+      function renderTagManager() {
+        if (!tags.length) {
+          customTags.innerHTML = '<p class="no-tags">还没有标签。先创建一个属于你的标签吧。</p>';
+          return;
+        }
+        customTags.innerHTML = tags.map((tag) => {
+          const tagCount = cards.filter((card) => getPostTagIds(card.dataset.postId).includes(tag.id)).length;
+          return `<div class="custom-tag-row">
+            <button class="tag-filter ${selectedTagId === tag.id ? "selected" : ""}" type="button" data-filter-tag="${tag.id}" style="${tagStyle(tag)}">
+              <span class="tag-name"><span class="tag-dot"></span>${escapeHtml(tag.name)}</span><small>${String(tagCount).padStart(2, "0")}</small>
+            </button>
+            <button class="remove-tag" type="button" data-remove-tag="${tag.id}" aria-label="删除标签 ${escapeHtml(tag.name)}" title="删除标签">×</button>
+          </div>`;
+        }).join("");
+      }
+
+      function renderPostTags(card) {
+        const postId = card.dataset.postId;
+        const assignedTags = getPostTagIds(postId).map(getTag).filter(Boolean);
+        const tagsEl = card.querySelector("[data-tags]");
+        tagsEl.innerHTML = assignedTags.map((tag) => `<button class="tag" type="button" data-filter-tag="${tag.id}" style="${tagStyle(tag)}">${escapeHtml(tag.name)}</button>`).join("");
+
+        const article = card.querySelector("article");
+        const oldControls = article.querySelector(".tag-controls");
+        if (oldControls) oldControls.remove();
+
+        const options = tags.length
+          ? tags.map((tag) => `<label class="tag-option" style="${tagStyle(tag)}"><input type="checkbox" data-tag-choice="${tag.id}" ${assignedTags.some((item) => item.id === tag.id) ? "checked" : ""} /><span class="tag-dot"></span>${escapeHtml(tag.name)}</label>`).join("")
+          : '<span class="no-tags">先在左侧创建标签。</span>';
+        article.insertAdjacentHTML("beforeend", `<div class="tag-controls">
+          <button class="tag-action" type="button" data-open-editor="${postId}">+ 添加标签</button>
+          <div class="tag-picker ${openEditorPostId === postId ? "open" : ""}" data-picker-for="${postId}">
+            <p>为这篇文章选择标签</p><div class="tag-options">${options}</div>
+          </div>
+        </div>`);
+      }
+
+      function filterPosts() {
+        const term = search.value.trim().toLowerCase();
+        let visible = 0;
+        cards.forEach((card) => {
+          const tagNames = getPostTagIds(card.dataset.postId).map((id) => getTag(id)?.name || "").join(" ").toLowerCase();
+          const matchesTag = !selectedTagId || getPostTagIds(card.dataset.postId).includes(selectedTagId);
+          const matchesSearch = !term || `${card.dataset.search} ${tagNames}`.toLowerCase().includes(term);
+          const show = matchesTag && matchesSearch;
+          card.classList.toggle("hidden", !show);
+          if (show) visible += 1;
+        });
+        count.textContent = `${String(visible).padStart(2, "0")} ${visible === 1 ? "POST" : "POSTS"}`;
+        empty.classList.toggle("visible", visible === 0);
+      }
+
+      function render() {
+        renderTagManager();
+        cards.forEach(renderPostTags);
+        filterPosts();
+      }
+
+      tagForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const name = tagNameInput.value.trim().replace(/\s+/g, " ");
+        if (!name) return;
+        if (tags.some((tag) => tag.name.toLocaleLowerCase() === name.toLocaleLowerCase())) {
+          tagStatus.textContent = `「${name}」已经存在。`;
+          return;
+        }
+        const id = `tag-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`;
+        tags.push({ id, name, color: tagColors[tags.length % tagColors.length] });
+        tagNameInput.value = "";
+        tagStatus.textContent = `已创建「${name}」。现在可把它加到文章上。`;
+        saveTags();
+        render();
+      });
+
+      customTags.addEventListener("click", (event) => {
+        const filter = event.target.closest("[data-filter-tag]");
+        const remove = event.target.closest("[data-remove-tag]");
+        if (filter) {
+          selectedTagId = selectedTagId === filter.dataset.filterTag ? null : filter.dataset.filterTag;
+          render();
+        }
+        if (remove) {
+          const tag = getTag(remove.dataset.removeTag);
+          if (!tag || !confirm(`删除标签「${tag.name}」？它会同时从所有文章移除。`)) return;
+          tags = tags.filter((item) => item.id !== tag.id);
+          Object.keys(assignments).forEach((postId) => {
+            assignments[postId] = assignments[postId].filter((tagId) => tagId !== tag.id);
+          });
+          if (selectedTagId === tag.id) selectedTagId = null;
+          tagStatus.textContent = `已删除「${tag.name}」。`;
+          saveTags();
+          render();
+        }
+      });
+
+      postList.addEventListener("click", (event) => {
+        const filter = event.target.closest("[data-filter-tag]");
+        const editor = event.target.closest("[data-open-editor]");
+        if (filter) {
+          selectedTagId = selectedTagId === filter.dataset.filterTag ? null : filter.dataset.filterTag;
+          render();
+        }
+        if (editor) {
+          openEditorPostId = openEditorPostId === editor.dataset.openEditor ? null : editor.dataset.openEditor;
+          render();
+        }
+      });
+
+      postList.addEventListener("change", (event) => {
+        const choice = event.target.closest("[data-tag-choice]");
+        if (!choice) return;
+        const postId = choice.closest(".post").dataset.postId;
+        const current = getPostTagIds(postId);
+        assignments[postId] = choice.checked ? [...new Set([...current, choice.dataset.tagChoice])] : current.filter((id) => id !== choice.dataset.tagChoice);
+        saveTags();
+        render();
+      });
+
+      search.addEventListener("input", filterPosts);
+      document.querySelector("[data-show-all]").addEventListener("click", () => {
+        selectedTagId = null;
+        render();
+      });
+      document.querySelector(".theme-toggle").addEventListener("click", () => {
+        const next = root.dataset.theme === "dark" ? "light" : "dark";
+        root.dataset.theme = next;
+        localStorage.setItem("posts-theme", next);
+      });
+      render();
+    </script>
+  </body>
+</html>
